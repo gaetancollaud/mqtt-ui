@@ -1,0 +1,17 @@
+{
+  "/api": {
+    "target": "http://localhost:8080/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/dev": {
+    "target": "http://localhost:8080/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/graphql": {
+    "target": "http://localhost:8080/",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

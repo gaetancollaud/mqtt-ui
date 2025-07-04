@@ -1,0 +1,52 @@
+---
+openapi: 3.1.0
+components:
+  schemas:
+    Instant:
+      type: string
+      format: date-time
+      examples:
+      - 2022-03-10T16:15:50Z
+    MqttMessage:
+      type: object
+      properties:
+        topic:
+          type: string
+        message:
+          type: string
+        receptionTime:
+          $ref: "#/components/schemas/Instant"
+        retain:
+          type: boolean
+paths:
+  /api/v1/mqtt:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MqttMessage"
+      summary: Last Messages
+      tags:
+      - Mqtt Resource
+  /api/v1/mqtt/stream:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MqttMessage"
+      summary: Stream
+      tags:
+      - Mqtt Resource
+info:
+  title: mqtt-ui API
+  version: 1.0.0-SNAPSHOT
