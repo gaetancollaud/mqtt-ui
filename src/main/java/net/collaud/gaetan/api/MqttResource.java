@@ -6,19 +6,31 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import net.collaud.gaetan.data.MqttMessage;
+import net.collaud.gaetan.service.MqttService;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.jboss.resteasy.reactive.RestStreamElementType;
 
-@Path("api/v1/sse")
-public class ServerSendEvent {
+import java.util.List;
+
+@Path("api/v1/mqtt")
+public class MqttResource {
 
     @Inject
-    @Channel("mqtt-out")
+    MqttService mqttService;
+
+    @Inject
+    @Channel("mqtt-in")
     Multi<MqttMessage> messages;
 
     @GET
+    @Path("stream")
     @RestStreamElementType(MediaType.APPLICATION_JSON)
     public Multi<MqttMessage> stream() {
         return messages;
+    }
+
+    @GET
+    public List<MqttMessage> lastMessages() {
+        return mqttService.getLastMessages();
     }
 }

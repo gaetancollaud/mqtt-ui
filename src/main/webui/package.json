@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "update-schema":  "wget -O openapi/schema.yaml http://localhost:8080/q/openapi",
+    "generate": "npx openapi-generator-cli generate -i openapi/schema.yaml -g typescript-angular -o client/src/app/core/modules/openapi --additional-properties fileNaming=kebab-case,withInterfaces=true --generate-alias-as-model"
   },
   "prettier": {
     "overrides": [
@@ -33,6 +35,7 @@
     "@angular/build": "^20.0.5",
     "@angular/cli": "^20.0.5",
     "@angular/compiler-cli": "^20.0.0",
+    "@openapitools/openapi-generator-cli": "^2.21.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.7.0",
     "karma": "~6.4.0",

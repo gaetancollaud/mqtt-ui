@@ -2,7 +2,11 @@ mp:
   messaging:
     incoming:
       mqtt-raw-in:
+        concurrency: 1
+        buffer-size: 10000
+        max-message-size: 1000000
         connector: smallrye-mqtt
+        topic: "#"
         host: ${mqttui.mqtt.host}
         port: ${mqttui.mqtt.port}
         username: ${mqttui.mqtt.username}
@@ -18,14 +22,18 @@ mp:
 quarkus:
   http:
     enable-compression: true
-  quinoa:
-    build-dir: dist/webui/browser
-    ui-root-path: "quinoa"
-    dev-server-port: 4200
-    enable-spa-routing: true
-    package-manager-install:
-      node-version: "22.16.0"
-      "~": true
+#  quinoa:
+#    build-dir: dist/webui/browser
+##    ui-root-path: "quinoa"
+#    dev-server-port: 4200
+#    enable-spa-routing: true
+  console:
+    color: true
+  log:
+    category:
+      "io.smallrye.reactive.messaging.mqtt":
+        level: WARN
+
 
 mqttui:
   mqtt:
