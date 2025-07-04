@@ -1,6 +1,5 @@
 import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {MqttMessage, MqttResourceService} from '../generated/openapi';
-import {generate} from 'rxjs';
 import {generateTree, TreeItem} from '../types/tree-item';
 
 @Injectable({
@@ -20,8 +19,23 @@ export class MqttStoreService {
       error: (error) => {
         console.log(error)
       },
-    })
+    });
+
+    const eventSource = new EventSource('api/v1/mqtt/stream');
+    eventSource.onerror = ((e) => {
+      console.log('Error with SSE', e);
+    });
+    eventSource.onmessage = ((messageEvent: MessageEvent<any>) => {
+      const mqttMessage = JSON.parse(messageEvent.data) as MqttMessage;
+      console.log('Message received', mqttMessage);
+      let list = this.lastMessages();
+      list.filter(m => m.topic !== mqttMessage.topic);
+      list.push(mqttMessage);
+      this.lastMessages.set(list);
+      // TODO update in tree
+    });
   }
+
 
   public getTree(): Signal<TreeItem> {
     return this.tree;

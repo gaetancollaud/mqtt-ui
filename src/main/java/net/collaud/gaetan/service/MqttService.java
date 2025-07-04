@@ -1,7 +1,6 @@
 package net.collaud.gaetan.service;
 
 import io.quarkus.logging.Log;
-import io.smallrye.common.annotation.Blocking;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import io.smallrye.reactive.messaging.mqtt.ReceivingMqttMessage;
 import jakarta.enterprise.context.ApplicationScoped;
