@@ -1,0 +1,35 @@
+mp:
+  messaging:
+    incoming:
+      mqtt-raw-in:
+        connector: smallrye-mqtt
+        host: ${mqttui.mqtt.host}
+        port: ${mqttui.mqtt.port}
+        username: ${mqttui.mqtt.username}
+        password: ${mqttui.mqtt.password}
+    outgoing:
+      mqtt-raw-out:
+        connector: smallrye-mqtt
+        host: ${mqttui.mqtt.host}
+        port: ${mqttui.mqtt.port}
+        username: ${mqttui.mqtt.username}
+        password: ${mqttui.mqtt.password}
+
+quarkus:
+  http:
+    enable-compression: true
+  quinoa:
+    build-dir: dist/webui/browser
+    ui-root-path: "quinoa"
+    dev-server-port: 4200
+    enable-spa-routing: true
+    package-manager-install:
+      node-version: "22.16.0"
+      "~": true
+
+mqttui:
+  mqtt:
+    host: localhost
+    port: 1883
+    username:
+    password:
