@@ -1,5 +1,7 @@
-import {inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, inject, Injectable, Signal, signal} from '@angular/core';
 import {MqttMessage, MqttResourceService} from '../generated/openapi';
+import {generate} from 'rxjs';
+import {generateTree, TreeItem} from '../types/tree-item';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,8 @@ import {MqttMessage, MqttResourceService} from '../generated/openapi';
 export class MqttStoreService {
   private mqttResource = inject(MqttResourceService);
 
-  private readonly lastMessages = signal<MqttMessage[]>([]);
+  private lastMessages = signal<MqttMessage[]>([]);
+  private tree = computed(() => generateTree(this.lastMessages()));
 
   constructor() {
     this.mqttResource.apiV1MqttGet("body", false).subscribe({
@@ -20,8 +23,8 @@ export class MqttStoreService {
     })
   }
 
-  public getLastMessages(): Signal<MqttMessage[]> {
-    return this.lastMessages;
+  public getTree(): Signal<TreeItem> {
+    return this.tree;
   }
 
 }

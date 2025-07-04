@@ -6,8 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "update-schema":  "wget -O openapi/schema.yaml http://localhost:8080/q/openapi",
+    "test": "CHROME_BIN=chromium ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "update-schema": "wget -O openapi/schema.yaml http://localhost:8080/q/openapi",
     "generate": "npx openapi-generator-cli generate -i openapi/schema.yaml -g typescript-angular -o src/app/generated/openapi --additional-properties fileNaming=kebab-case,withInterfaces=true --generate-alias-as-model"
   },
   "prettier": {
@@ -22,10 +23,12 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.0.5",
     "@angular/common": "^20.0.0",
     "@angular/compiler": "^20.0.0",
     "@angular/core": "^20.0.0",
     "@angular/forms": "^20.0.0",
+    "@angular/material": "^20.0.5",
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
     "rxjs": "~7.8.0",
