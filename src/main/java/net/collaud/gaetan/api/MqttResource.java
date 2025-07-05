@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import net.collaud.gaetan.data.MqttMessage;
 import net.collaud.gaetan.service.MqttService;
@@ -34,5 +35,11 @@ public class MqttResource {
     @GET
     public List<MqttMessage> lastMessages() {
         return mqttService.getLastMessages();
+    }
+
+    @GET
+    @Path("history")
+    public List<MqttMessage> getHistory(@QueryParam("topic") String topic) {
+        return mqttService.getHistory(topic);
     }
 }

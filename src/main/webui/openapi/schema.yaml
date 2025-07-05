@@ -33,6 +33,25 @@ paths:
       summary: Last Messages
       tags:
       - Mqtt Resource
+  /api/v1/mqtt/history:
+    get:
+      parameters:
+      - name: topic
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MqttMessage"
+      summary: Get History
+      tags:
+      - Mqtt Resource
   /api/v1/mqtt/stream:
     get:
       responses:

@@ -9,7 +9,7 @@
     "test": "CHROME_BIN=chromium ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "update-schema": "wget -O openapi/schema.yaml http://localhost:8080/q/openapi",
-    "generate": "npx openapi-generator-cli generate -i openapi/schema.yaml -g typescript-angular -o src/app/generated/openapi --additional-properties fileNaming=kebab-case,withInterfaces=true --generate-alias-as-model"
+    "generate": "openapi-generator-cli generate -i openapi/schema.yaml -g typescript-angular -o src/app/generated/openapi --additional-properties fileNaming=kebab-case,withInterfaces=true --generate-alias-as-model"
   },
   "prettier": {
     "overrides": [

@@ -1,7 +1,6 @@
-import {generateTree} from './tree-item';
+import {findNode, generateTree} from './tree-item';
 
-describe('App', () => {
-
+describe('TreeItem', () => {
 
   it('should create an empty tree', () => {
     const root = generateTree([]);
@@ -34,7 +33,7 @@ describe('App', () => {
     const root = generateTree([{
       topic: 'a/b',
       message: 'hello1'
-    },{
+    }, {
       topic: 'a/c',
       message: 'hello2'
     }]);
@@ -57,5 +56,20 @@ describe('App', () => {
     expect(root.children[0].children[1].mqttMessage).toBeDefined();
     expect(root.children[0].children[1].mqttMessage?.topic).toBe('a/c');
     expect(root.children[0].children[1].mqttMessage?.message).toBe('hello2');
+  });
+  it('should find the node', () => {
+    const root = generateTree([{
+      topic: 'a/b',
+      message: 'hello1'
+    }, {
+      topic: 'a/c',
+      message: 'hello2'
+    }]);
+
+    expect(findNode(root, `x`)).toBeUndefined();
+    expect(findNode(root, `a/x`)).toBeUndefined();
+    expect(findNode(root, `a`)?.name).toBe('a');
+    expect(findNode(root, `a/b`)?.name).toBe('b');
+    expect(findNode(root, `a/c`)?.name).toBe('c');
   });
 });

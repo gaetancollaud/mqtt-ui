@@ -1,7 +1,12 @@
-<h1>Test</h1>
+<mat-toolbar>
+  <span>MSimple MQTT UI</span>
+</mat-toolbar>
 
 <!--<pre>-->
-<!--  {{ tree() | json }}-->
+<!--  {{ openNodes() | json }}-->
 <!--</pre>-->
 
-<app-display-tree [treeItem]="tree()"></app-display-tree>
+<div class="layout">
+  <app-display-tree [treeItem]="tree()" (nodeSelected)="nodeSelected($event)"/>
+  <app-display-topic-messages [node]="selectedNode()" [messages]="selectedNodeLastMessages()"/>
+</div>
