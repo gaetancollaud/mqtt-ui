@@ -13,11 +13,7 @@ jobs:
       MAVEN_OPTS: -Xmx4g
       DOCKER_BUILDKIT: 1
 
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+    permissions: write-all
 
     steps:
       - name: Cache local Maven repository
