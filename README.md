@@ -77,6 +77,9 @@ using environment variables:
  - [ ] Properly display the value and the history
  - [ ] Properly display the date
  - [ ] Write to a topic
+ - [ ] Better component architecture (future-proofing)
+ - [ ] Limit the number of history items
+ - [ ] Properly display JSON messages
  - [ ] Delete a topic (send null to the broker)
  - [ ] Optional: When a new value arrives, highlight it in the UI
  - [ ] Report a bad MQTT connection in the UI for easy troubleshooting
