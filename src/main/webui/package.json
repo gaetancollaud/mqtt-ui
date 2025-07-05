@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run generate && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "CHROME_BIN=chromium ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
