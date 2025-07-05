@@ -1,84 +1,83 @@
-# mqtt-ui
+# MQTT UI
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is a dead simple MQTT web interface. No fancy graph, no fancy feature, just a list of MQTT topics and their
+content.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Motivation
 
-## Running the application in dev mode
+- [MQTT-Explorer](https://github.com/thomasnordquist/MQTT-Explorer) is unmaintained and has a restrictive licence
+- [terdia/mqttui](https://github.com/terdia/mqttui) uses a fancy graph to display the topic and make my browser crash
+  since I have thousands of topics on my broker
+- I wanted a web ui to deploy alongside my mosquitto broker
 
-You can run your application in dev mode that enables live coding using:
+## Techs
 
-```shell script
-./mvnw quarkus:dev
+- [Quarkus framework](https://quarkus.io)
+- [Angular](https://angular.io) with Material Design
+
+## How to run
+
+All options bellow will start the app at port 8080. Simply open [localhost:8080](http://localhost:8080) in your browser.
+
+### From source with Maven and java
+
+```shell
+git clone git@github.com:gaetancollaud/mqtt-ui.git
+cd mqtt-ui
+mvn clean package -DskipTests
+java -jar ./target/quarkus-app/quarkus-run.jar
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+### From source with Maven and native image
 
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
+```shell
+git clone git@github.com:gaetancollaud/mqtt-ui.git
+cd mqtt-ui
+mvn clean package -DskipTests -Pnative
+./target/mqtt-ui-1.0.0-SNAPSHOT-runner
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### Using docker
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```shell
+docker run ghcr.io/gaetancollaud/mqtt-ui:latest
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### Using docker-compose
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+```shell
+services:
+  mqtt-ui:
+    image: ghcr.io/gaetancollaud/mqtt-ui
+    ports:
+      - 8080:8080
+    environment:
+      - MQTTUI_MQTT_HOST=my-broker-host.com
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+## Configuration
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
+You can configure the app
+using [all the configuration options allowed by Quarkus](https://quarkus.io/guides/config-reference) but the easiest is
+using environment variables:
 
-You can then execute your native executable with: `./target/mqtt-ui-1.0.0-SNAPSHOT-runner`
+| name                 | default value |
+|----------------------|---------------|
+| MQTTUI_MQTT_HOST     | localhost     |
+| MQTTUI_MQTT_PORT     | 1883          |
+| MQTTUI_MQTT_USERNAME | *< empty >*   |
+| MQTTUI_MQTT_PASSWORD | *< empty >*   |
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+## Roadmap
 
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- YAML Configuration ([guide](https://quarkus.io/guides/config-yaml)): Use YAML to configure your Quarkus application
-- Quinoa ([guide](https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa/dev/index.html)): Develop, build, and serve your npm-compatible web applications such as React, Angular, Vue, Lit, Svelte, Astro, SolidJS, and others alongside Quarkus.
-
-## Provided Code
-
-### YAML Config
-
-Configure your application with YAML
-
-[Related guide section...](https://quarkus.io/guides/config-reference#configuration-examples)
-
-The Quarkus application configuration is located in `src/main/resources/application.yml`.
-
-### Quinoa
-
-Quinoa codestart added a tiny Vite app in src/main/webui. The page is configured to be visible on <a href="/quinoa">/quinoa</a>.
-
-[Related guide section...](https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa/dev/index.html)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+ - [x] List topics in a tree
+ - [x] Live reload of values using Sever-Sent-Event (SSE)
+ - [x] Restore the tree as it was when you reload the page
+ - [x] Restore the selected topic when you reload the page
+ - [ ] Properly display the value and the history
+ - [ ] Properly display the date
+ - [ ] Write to a topic
+ - [ ] Delete a topic (send null to the broker)
+ - [ ] Optional: When a new value arrives, highlight it in the UI
+ - [ ] Report a bad MQTT connection in the UI for easy troubleshooting
+ - [ ] Support all MQTT connection option (ssl, etc.)
