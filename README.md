@@ -6,9 +6,9 @@ content.
 ## Motivation
 
 - [MQTT-Explorer](https://github.com/thomasnordquist/MQTT-Explorer) is unmaintained and has a restrictive licence
-- [terdia/mqttui](https://github.com/terdia/mqttui) uses a fancy graph to display the topic and make my browser crash
+- [terdia/mqttui](https://github.com/terdia/mqttui) uses a fancy graph to display the topics and make my browser crash
   since I have thousands of topics on my broker
-- I wanted a web ui to deploy alongside my mosquitto broker
+- I wanted a simple web ui to deploy alongside my mosquitto broker
 
 ## Techs
 
