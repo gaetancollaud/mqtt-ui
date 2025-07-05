@@ -4,10 +4,11 @@ import {DisplayTree} from './components/display-tree/display-tree';
 import {TreeItem} from './types/tree-item';
 import {DisplayTopicMessages} from './components/display-topic-messages/display-topic-messages';
 import {MatToolbar} from '@angular/material/toolbar';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [DisplayTree, DisplayTopicMessages, MatToolbar],
+  imports: [DisplayTree, DisplayTopicMessages, MatToolbar, JsonPipe],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

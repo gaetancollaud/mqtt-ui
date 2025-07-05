@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, effect, inject, Injectable, Signal, signal} from '@angular/core';
 import {MqttMessage, MqttResourceService} from '../generated/openapi';
 import {findNode, generateTree, TreeItem} from '../types/tree-item';
 import {PersistenceService} from './persistence.service';
@@ -13,7 +13,16 @@ export class MqttStoreService {
   private lastMessages = signal<MqttMessage[]>([]);
   private openNodes = signal<string[]>(this.persistenceService.getOpenNodes());
   private tree = computed(() => generateTree(this.lastMessages(), this.openNodes()));
-  private selectedNode = signal<TreeItem | undefined>(undefined);
+  private selectedNodePath = signal<string | undefined>(this.persistenceService.getCurrentNodePath());
+  private selectedNode = computed(() => {
+    const path = this.selectedNodePath();
+    if (path) {
+      let node = findNode(this.tree(), path);
+      return node;
+    } else {
+      return undefined;
+    }
+  });
   private selectedNodeLastMessages = signal<MqttMessage[]>([]);
 
   constructor() {
@@ -32,12 +41,16 @@ export class MqttStoreService {
     });
     eventSource.onmessage = ((messageEvent: MessageEvent<any>) => {
       const mqttMessage = JSON.parse(messageEvent.data) as MqttMessage;
-      // console.log('Message received', mqttMessage);
 
       // update array in place
       let list = this.lastMessages();
-      list.filter(m => m.topic !== mqttMessage.topic);
-      list.push(mqttMessage);
+      const previous = list.find(m => m.topic !== mqttMessage.topic);
+      if (previous) {
+        Object.assign(previous, mqttMessage);
+      } else {
+        list.push(mqttMessage);
+        this.lastMessages.set([...list]);
+      }
 
       let nodeToUpdate = findNode(this.tree(), mqttMessage.topic!);
       if (nodeToUpdate) {
@@ -46,37 +59,45 @@ export class MqttStoreService {
 
       let selectedNode = this.selectedNode();
       if (selectedNode && selectedNode.mqttMessage && selectedNode.mqttMessage.topic === mqttMessage.topic) {
-        this.selectedNodeLastMessages.set([...this.selectedNodeLastMessages(), mqttMessage]);
+        this.selectedNodeLastMessages.set([...this.selectedNodeLastMessages(), mqttMessage].sort(this.treeItemSort));
+      }
+    });
+
+    effect(() => {
+      let selectedNode = this.selectedNode();
+      this.selectedNodeLastMessages.set([]);
+      if(selectedNode){
+        this.mqttResource.apiV1MqttHistoryGet(selectedNode?.mqttMessage?.topic, "body", false).subscribe({
+              next: (value) => {
+                let all = [...this.selectedNodeLastMessages(), ...value];
+                all = all.sort(this.treeItemSort);
+                this.selectedNodeLastMessages.set(all);
+              },
+              error: (error) => {
+                console.log(error)
+              },
+            });
       }
     });
   }
 
-  public selectNode(node: TreeItem | undefined) {
-    if (node) {
-      this.selectedNode.set(node);
-      this.selectedNodeLastMessages.set([]);
-      this.mqttResource.apiV1MqttHistoryGet(node?.mqttMessage?.topic, "body", false).subscribe({
-        next: (value) => {
-          this.selectedNodeLastMessages.set(value)
-        },
-        error: (error) => {
-          console.log(error)
-        },
-      });
+  private treeItemSort(a: MqttMessage, b: MqttMessage) {
+    return (b.receptionTime || '').localeCompare(a.receptionTime || '')
+  }
 
+  public selectNode(node: TreeItem | undefined) {
+    this.persistenceService.setCurrentNodePath(node?.path);
+    this.selectedNodePath.set(node?.path);
+    if (node) {
       // Open
       let openNodes = this.openNodes();
       let wasOpen = openNodes.find(n => n === node.path);
-      if(wasOpen) {
+      if (wasOpen) {
         this.openNodes.set([...openNodes.filter(n => n !== node.path)]);
-      }else{
+      } else {
         this.openNodes.set([...openNodes, node.path]);
       }
       this.persistenceService.setOpenNodes(this.openNodes());
-
-    } else {
-      this.selectedNode.set(undefined);
-      this.selectedNodeLastMessages.set([]);
     }
   }
 

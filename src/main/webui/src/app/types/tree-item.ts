@@ -19,7 +19,7 @@ export function generateTree(mqttMessages: MqttMessage[], openPaths: string[]): 
     children: []
   } as TreeItem;
 
-  sorted.forEach(mqttMessage => addToNode(root, parseTopic(mqttMessage.topic!), mqttMessage, openPaths))
+  sorted.forEach(mqttMessage => addToNode(root, parseTopic(mqttMessage.topic!), mqttMessage, openPaths, true))
 
   return root;
 }
@@ -42,11 +42,11 @@ function parseTopic(topic: string): string[] {
   return topic.split('/');
 }
 
-function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, openPaths: string[]) {
+function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, openPaths: string[], isRoot:boolean) {
   if (paths.length === 0) {
     return;
   } else if (paths.length === 1) {
-    let path = node.path + '/' + paths[0];
+    let path = isRoot ? paths[0] : node.path + '/' + paths[0];
     node.children.push({
       open: openPaths.includes(path),
       name: paths[0],
@@ -59,7 +59,7 @@ function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, op
     const name = paths[0];
     let child = node.children.find(child => child.name === name);
     if (!child) {
-      let path = node.path + '/' + name;
+      let path = isRoot ? name : node.path + '/' + name;
       child = {
         name: name,
         open: openPaths.includes(path),
@@ -69,6 +69,6 @@ function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, op
       } as TreeItem;
       node.children.push(child);
     }
-    addToNode(child, paths.slice(1), mqttMessage, openPaths);
+    addToNode(child, paths.slice(1), mqttMessage, openPaths, false);
   }
 }

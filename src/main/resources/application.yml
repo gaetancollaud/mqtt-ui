@@ -43,3 +43,9 @@ mqttui:
     port: 1883
     username:
     password:
+
+
+"%dev":
+  quarkus:
+    quinoa:
+      ~: false
