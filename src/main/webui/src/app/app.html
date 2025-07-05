@@ -10,8 +10,4 @@
   <app-display-tree [treeItem]="tree()" (nodeSelected)="nodeSelected($event)"/>
   <app-display-topic-messages [node]="selectedNode()" [messages]="selectedNodeLastMessages()"/>
 </div>
-  <div>
-  <pre>
-    {{ tree() | json }}
-  </pre>
-  </div>
+
