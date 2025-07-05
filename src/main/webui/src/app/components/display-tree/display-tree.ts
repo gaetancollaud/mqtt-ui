@@ -34,6 +34,10 @@ export class DisplayTree implements AfterViewInit {
     this.updateTreeOpen();
   }
 
+  trackByFn(index: number, item: TreeItem) {
+    return item.path;
+  }
+
   selectNode(node: TreeItem) {
     this.nodeSelected.emit(node);
   }

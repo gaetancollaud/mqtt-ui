@@ -6,7 +6,7 @@
   </mat-card-header>
   <mat-card-content>
     @for (message of messages(); track message.receptionTime) {
-      <p>{{ message.message }}</p>
+      <app-display-message [mqttMessage]="message" />
     }
   </mat-card-content>
   <!--  <mat-card-actions>-->

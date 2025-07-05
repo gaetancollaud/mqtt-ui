@@ -1,4 +1,4 @@
-<mat-tree #tree [dataSource]="treeItem().children"  [childrenAccessor]="childrenAccessor">
+<mat-tree #tree [dataSource]="treeItem().children"  [childrenAccessor]="childrenAccessor" [trackBy]="trackByFn">
   <!-- This is the tree node template for leaf nodes -->
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectNode(node)">
     <!-- use a disabled button to provide padding for tree leaf -->
