@@ -11,24 +11,26 @@ mp:
         port: ${mqttui.mqtt.port}
         username: ${mqttui.mqtt.username}
         password: ${mqttui.mqtt.password}
-    outgoing:
-      mqtt-raw-out:
-        connector: smallrye-mqtt
-        host: ${mqttui.mqtt.host}
-        port: ${mqttui.mqtt.port}
-        username: ${mqttui.mqtt.username}
-        password: ${mqttui.mqtt.password}
+#    outgoing:
+#      mqtt-raw-out:
+#        connector: smallrye-mqtt
+#        host: ${mqttui.mqtt.host}
+#        port: ${mqttui.mqtt.port}
+#        username: ${mqttui.mqtt.username}
+#        password: ${mqttui.mqtt.password}
 
 quarkus:
   http:
     enable-compression: true
   quinoa:
     build-dir: dist/webui/browser
-#    ui-root-path: "quinoa"
     dev-server-port: 4200
     enable-spa-routing: true
   console:
     color: true
+  native:
+    additional-build-args:
+      - -march=compatibility
   log:
     category:
       "io.smallrye.reactive.messaging.mqtt":

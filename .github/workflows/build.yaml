@@ -78,6 +78,7 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
+          platforms: linux/amd64
           file: src/main/docker/Dockerfile.native-micro
           push: true
           tags: ${{ steps.prep_image.outputs.tags }}
