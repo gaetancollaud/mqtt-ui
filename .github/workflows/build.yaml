@@ -33,8 +33,11 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'
+          distribution: 'graalvm'
           cache: maven
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Maven version
         run: mvn -v
       - name: Build with Maven
