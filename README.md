@@ -75,13 +75,13 @@ using environment variables:
  - [x] Live reload of values using Sever-Sent-Event (SSE)
  - [x] Restore the tree as it was when you reload the page
  - [x] Restore the selected topic when you reload the page
- - [ ] Properly display the value and the history
- - [ ] Properly display the date
+ - [x] Properly display the value and the history
+ - [x] Properly display the date
+ - [x] Properly display JSON messages
+ - [x] Limit the number of history items
  - [ ] Write to a topic
- - [ ] Better component architecture (future-proofing)
- - [ ] Limit the number of history items
- - [ ] Properly display JSON messages
  - [ ] Delete a topic (send null to the broker)
+ - [ ] Better component architecture (future-proofing)
  - [ ] Optional: When a new value arrives, highlight it in the UI
  - [ ] Report a bad MQTT connection in the UI for easy troubleshooting
  - [ ] Support all MQTT connection option (ssl, etc.)
