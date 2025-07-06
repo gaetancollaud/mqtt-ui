@@ -3,6 +3,7 @@ import {TreeItem} from '../../types/tree-item';
 import {MatTree, MatTreeModule} from '@angular/material/tree';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
+import {MatCard, MatCardContent} from '@angular/material/card';
 
 @Component({
   selector: 'app-display-tree',
@@ -10,6 +11,9 @@ import {MatIconButton} from '@angular/material/button';
     MatTreeModule,
     MatIconButton,
     MatIcon,
+    MatCard,
+    MatCardContent,
+
   ],
   templateUrl: './display-tree.html',
   styleUrl: './display-tree.scss',

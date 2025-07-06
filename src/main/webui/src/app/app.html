@@ -1,13 +1,9 @@
-<mat-toolbar>
-  <span>Simple MQTT interface</span>
-</mat-toolbar>
+<app-layout>
+  <!--<pre>-->
+  <!--  {{ openNodes() | json }}-->
+  <!--</pre>-->
 
-<!--<pre>-->
-<!--  {{ openNodes() | json }}-->
-<!--</pre>-->
-
-<div class="layout">
   <app-display-tree [treeItem]="tree()" (nodeSelected)="nodeSelected($event)"/>
   <app-display-topic-messages [node]="selectedNode()" [messages]="selectedNodeLastMessages()"/>
-</div>
+</app-layout>
 

@@ -1,8 +1,8 @@
-.layout{
-  display:flex;
-  max-height: 100vh;
+app-layout {
+  display: flex;
+  flex-direction: column;
 
-  * {
-    flex:1;
+  *{
+    flex: 1;
   }
 }

@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <span>Simple MQTT interface</span>
+
+
+  <span class="spacer"></span>
+
+
+  <mat-slide-toggle
+    class="example-margin"
+    [checked]="darkMode()"
+  (change)="toggleDarkMode()">
+    Dark Mode
+  </mat-slide-toggle>
+</mat-toolbar>
+
+<div class="content">
+  <ng-content></ng-content>
+</div>
