@@ -26,7 +26,7 @@ All options bellow will start the app at port 8080. Simply open [localhost:8080]
 git clone git@github.com:gaetancollaud/mqtt-ui.git
 cd mqtt-ui
 mvn clean package -DskipTests
-java -jar ./target/quarkus-app/quarkus-run.jar
+MQTTUI_MQTT_HOST=my-broker-host.com java -jar ./target/quarkus-app/quarkus-run.jar
 ```
 
 ### From source with Maven and native image
@@ -35,13 +35,13 @@ java -jar ./target/quarkus-app/quarkus-run.jar
 git clone git@github.com:gaetancollaud/mqtt-ui.git
 cd mqtt-ui
 mvn clean package -DskipTests -Pnative
-./target/mqtt-ui-1.0.0-SNAPSHOT-runner
+MQTTUI_MQTT_HOST=my-broker-host.com ./target/mqtt-ui-1.0.0-SNAPSHOT-runner
 ```
 
 ### Using docker
 
 ```shell
-docker run ghcr.io/gaetancollaud/mqtt-ui:latest
+docker run -p 8080:8080 -e MQTTUI_MQTT_HOST=my-broker-host.com ghcr.io/gaetancollaud/mqtt-ui:latest
 ```
 
 ### Using docker-compose
