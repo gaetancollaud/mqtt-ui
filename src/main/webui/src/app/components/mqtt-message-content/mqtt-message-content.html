@@ -1,0 +1,16 @@
+<mat-card appearance="filled">
+  <mat-card-header>
+    <mat-card-subtitle>
+      {{ mqttMessage()?.receptionTime | dateTime }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="message">
+      @if (isJson()) {
+        <pre>{{ message() | json }}</pre>
+      } @else {
+        {{ message() }}
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

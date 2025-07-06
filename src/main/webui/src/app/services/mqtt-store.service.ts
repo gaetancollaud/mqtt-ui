@@ -3,6 +3,8 @@ import {MqttMessage, MqttResourceService} from '../generated/openapi';
 import {findNode, generateTree, TreeItem} from '../types/tree-item';
 import {PersistenceService} from './persistence.service';
 
+const MAX_HISTORY_MESSAGES = 10;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -58,7 +60,9 @@ export class MqttStoreService {
         nodeToUpdate.mqttMessage = mqttMessage;
 
         if (nodeToUpdate.path === this.selectedNodePath()) {
-          this.selectedNodeLastMessages.set([...this.selectedNodeLastMessages(), mqttMessage].sort(this.treeItemSort));
+          let list = [...this.selectedNodeLastMessages(), mqttMessage].sort(this.treeItemSort);
+          list = list.slice(0, MAX_HISTORY_MESSAGES);
+          this.selectedNodeLastMessages.set(list);
         }
       }
 

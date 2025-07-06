@@ -1,15 +1,20 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {TreeItem} from '../../types/tree-item';
 import {MqttMessage} from '../../generated/openapi';
 import {MatCardModule} from '@angular/material/card';
-import {DisplayMessage} from '../display-message/display-message';
 import {DateTimePipe} from '../../pipes/date-time-pipe';
-import {CopyToClipboard} from '../copy-to-clipboard/copy-to-clipboard';
 import {TruncatedTextWithCopy} from '../truncated-text-with-copy/truncated-text-with-copy';
+import {MqttMessageContent} from '../mqtt-message-content/mqtt-message-content';
+import {
+  MatAccordion,
+  MatExpansionPanel, MatExpansionPanelDescription,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-display-topic-messages',
-  imports: [MatCardModule, DisplayMessage, DateTimePipe, CopyToClipboard, TruncatedTextWithCopy],
+  imports: [MatCardModule, MqttMessageContent, DateTimePipe, TruncatedTextWithCopy, MatAccordion, MatExpansionPanel, MatExpansionPanelTitle, MatExpansionPanelHeader, MatExpansionPanelDescription],
   templateUrl: './display-topic-messages.html',
   styleUrl: './display-topic-messages.scss'
 })

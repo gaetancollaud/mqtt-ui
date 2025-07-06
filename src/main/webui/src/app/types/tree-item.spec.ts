@@ -3,7 +3,7 @@ import {findNode, generateTree} from './tree-item';
 describe('TreeItem', () => {
 
   it('should create an empty tree', () => {
-    const root = generateTree([]);
+    const root = generateTree([], []);
     expect(root.children.length).toBe(0);
   });
 
@@ -11,7 +11,7 @@ describe('TreeItem', () => {
     const root = generateTree([{
       topic: 'a/b/c',
       message: 'hello'
-    }]);
+    }], []);
 
     expect(root.name).toBe('');
     expect(root.mqttMessage).toBeUndefined()
@@ -36,7 +36,7 @@ describe('TreeItem', () => {
     }, {
       topic: 'a/c',
       message: 'hello2'
-    }]);
+    }], []);
 
     expect(root.name).toBe('');
     expect(root.mqttMessage).toBeUndefined()
@@ -64,7 +64,7 @@ describe('TreeItem', () => {
     }, {
       topic: 'a/c',
       message: 'hello2'
-    }]);
+    }], []);
 
     expect(findNode(root, `x`)).toBeUndefined();
     expect(findNode(root, `a/x`)).toBeUndefined();

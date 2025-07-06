@@ -1,15 +1,30 @@
 <mat-card appearance="outlined">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>
-      <app-truncated-text-with-copy [text]="node()?.mqttMessage?.topic" />
+      <app-truncated-text-with-copy [text]="node()?.mqttMessage?.topic"/>
     </mat-card-title>
-    <mat-card-subtitle>{{ node()?.mqttMessage?.receptionTime | dateTime }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    @for (message of messages(); track message.receptionTime) {
-      <app-display-message [mqttMessage]="message"/>
-    }
+    <app-mqtt-message-content [mqttMessage]="node()?.mqttMessage"/>
+
+
+    <mat-accordion>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> History</mat-panel-title>
+          <mat-panel-description> Show previous value for this topic</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="history-content">
+          @for (message of messages().slice(1); track message.receptionTime) {
+            <app-mqtt-message-content [mqttMessage]="message"/>
+          }
+        </div>
+
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
   </mat-card-content>
 
   <!--  <mat-card-actions>-->
