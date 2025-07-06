@@ -1,7 +1,8 @@
 # MQTT UI
 
-This is a dead simple MQTT web interface. No fancy graph, no fancy feature, just a list of MQTT topics and their
-content.
+This is a dead simple MQTT web interface. No fancy graph, no fancy feature, just a list of MQTT topics and their content.
+
+![](src/doc/images/example-1.png)
 
 ## Motivation
 

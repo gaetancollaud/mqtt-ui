@@ -1,3 +1,6 @@
+@if (node()?.mqttMessage) {
+
+
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>
@@ -32,3 +35,7 @@
   <!--    <button matButton>SHARE</button>-->
   <!--  </mat-card-actions>-->
 </mat-card>
+
+} @else {
+  <p>Nothing to display, please select a leaf node in the tree</p>
+}
