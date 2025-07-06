@@ -1,0 +1,6 @@
+<span [title]="text()">
+  {{ textTruncated() }}
+  @if (text()) {
+    <app-copy-to-clipboard [content]="text()"/>
+  }
+</span>

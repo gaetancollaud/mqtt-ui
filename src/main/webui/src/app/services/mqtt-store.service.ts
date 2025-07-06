@@ -18,6 +18,7 @@ export class MqttStoreService {
     const path = this.selectedNodePath();
     if (path) {
       let node = findNode(this.tree(), path);
+      console.log("Selected node path: " + path, node);
       return node;
     } else {
       return undefined;
@@ -44,7 +45,7 @@ export class MqttStoreService {
 
       // update array in place
       let list = this.lastMessages();
-      const previous = list.find(m => m.topic !== mqttMessage.topic);
+      const previous = list.find(m => m.topic === mqttMessage.topic);
       if (previous) {
         Object.assign(previous, mqttMessage);
       } else {
@@ -55,28 +56,28 @@ export class MqttStoreService {
       let nodeToUpdate = findNode(this.tree(), mqttMessage.topic!);
       if (nodeToUpdate) {
         nodeToUpdate.mqttMessage = mqttMessage;
+
+        if (nodeToUpdate.path === this.selectedNodePath()) {
+          this.selectedNodeLastMessages.set([...this.selectedNodeLastMessages(), mqttMessage].sort(this.treeItemSort));
+        }
       }
 
-      let selectedNode = this.selectedNode();
-      if (selectedNode && selectedNode.mqttMessage && selectedNode.mqttMessage.topic === mqttMessage.topic) {
-        this.selectedNodeLastMessages.set([...this.selectedNodeLastMessages(), mqttMessage].sort(this.treeItemSort));
-      }
     });
 
     effect(() => {
       let selectedNode = this.selectedNode();
       this.selectedNodeLastMessages.set([]);
-      if(selectedNode){
+      if (selectedNode && selectedNode.mqttMessage) {
         this.mqttResource.apiV1MqttHistoryGet(selectedNode?.mqttMessage?.topic, "body", false).subscribe({
-              next: (value) => {
-                let all = [...this.selectedNodeLastMessages(), ...value];
-                all = all.sort(this.treeItemSort);
-                this.selectedNodeLastMessages.set(all);
-              },
-              error: (error) => {
-                console.log(error)
-              },
-            });
+          next: (value) => {
+            let all = [...this.selectedNodeLastMessages(), ...value];
+            all = all.sort(this.treeItemSort);
+            this.selectedNodeLastMessages.set(all);
+          },
+          error: (error) => {
+            console.log(error)
+          },
+        });
       }
     });
   }
@@ -93,11 +94,12 @@ export class MqttStoreService {
       let openNodes = this.openNodes();
       let wasOpen = openNodes.find(n => n === node.path);
       if (wasOpen) {
-        this.openNodes.set([...openNodes.filter(n => n !== node.path)]);
+        openNodes = [...openNodes.filter(n => n !== node.path)];
       } else {
-        this.openNodes.set([...openNodes, node.path]);
+        openNodes = [...openNodes, node.path];
       }
-      this.persistenceService.setOpenNodes(this.openNodes());
+      this.persistenceService.setOpenNodes(openNodes);
+      this.openNodes.set(openNodes);
     }
   }
 

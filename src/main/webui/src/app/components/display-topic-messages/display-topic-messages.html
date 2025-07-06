@@ -1,14 +1,17 @@
 <mat-card appearance="outlined">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>{{ node()?.mqttMessage?.topic }}</mat-card-title>
-    <mat-card-subtitle>{{ node()?.mqttMessage?.receptionTime }}</mat-card-subtitle>
+    <mat-card-title>
+      <app-truncated-text-with-copy [text]="node()?.mqttMessage?.topic" />
+    </mat-card-title>
+    <mat-card-subtitle>{{ node()?.mqttMessage?.receptionTime | dateTime }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     @for (message of messages(); track message.receptionTime) {
-      <app-display-message [mqttMessage]="message" />
+      <app-display-message [mqttMessage]="message"/>
     }
   </mat-card-content>
+
   <!--  <mat-card-actions>-->
   <!--    <button matButton>LIKE</button>-->
   <!--    <button matButton>SHARE</button>-->

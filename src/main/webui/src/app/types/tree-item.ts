@@ -9,7 +9,7 @@ export interface TreeItem {
 }
 
 export function generateTree(mqttMessages: MqttMessage[], openPaths: string[]): TreeItem {
-  const sorted = mqttMessages.sort((a, b) => a.topic!.localeCompare(b.topic!) || 0);
+  const sorted = mqttMessages.sort((a, b) => (a.topic || '').localeCompare((b.topic || '')));
 
   const root = {
     name: '',
@@ -21,6 +21,7 @@ export function generateTree(mqttMessages: MqttMessage[], openPaths: string[]): 
 
   sorted.forEach(mqttMessage => addToNode(root, parseTopic(mqttMessage.topic!), mqttMessage, openPaths, true))
 
+  console.log(`New tree generated based on ${mqttMessages.length} messages and those open nodes:`, sorted, root);
   return root;
 }
 
@@ -42,7 +43,7 @@ function parseTopic(topic: string): string[] {
   return topic.split('/');
 }
 
-function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, openPaths: string[], isRoot:boolean) {
+function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, openPaths: string[], isRoot: boolean) {
   if (paths.length === 0) {
     return;
   } else if (paths.length === 1) {
