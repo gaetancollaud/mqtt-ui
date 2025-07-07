@@ -1,40 +1,34 @@
 @if (node()?.mqttMessage) {
 
 
-<mat-card appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>
-      <app-truncated-text-with-copy [text]="node()?.mqttMessage?.topic"/>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <app-mqtt-message-content [mqttMessage]="node()?.mqttMessage"/>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        <app-truncated-text-with-copy [text]="node()?.mqttMessage?.topic"/>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-mqtt-message-content [mqttMessage]="node()?.mqttMessage"/>
 
 
-    <mat-accordion>
-      <mat-expansion-panel hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title> History</mat-panel-title>
-          <mat-panel-description> Show previous value for this topic</mat-panel-description>
-        </mat-expansion-panel-header>
-
+      @if (showHistory()) {
+        <button mat-raised-button color="primary" (click)="showHistory.set(false)">Hide history</button>
         <div class="history-content">
           @for (message of messages().slice(1); track message.receptionTime) {
             <app-mqtt-message-content [mqttMessage]="message"/>
           }
         </div>
 
+      } @else {
+        <button mat-raised-button color="primary" (click)="showHistory.set(true)">Display history</button>
+      }
+    </mat-card-content>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-
-  </mat-card-content>
-
-  <!--  <mat-card-actions>-->
-  <!--    <button matButton>LIKE</button>-->
-  <!--    <button matButton>SHARE</button>-->
-  <!--  </mat-card-actions>-->
-</mat-card>
+    <!--  <mat-card-actions>-->
+    <!--    <button matButton>LIKE</button>-->
+    <!--    <button matButton>SHARE</button>-->
+    <!--  </mat-card-actions>-->
+  </mat-card>
 
 } @else {
   <p>Nothing to display, please select a leaf node in the tree</p>
