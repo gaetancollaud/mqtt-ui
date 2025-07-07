@@ -79,9 +79,10 @@ using environment variables:
  - [x] Properly display the date
  - [x] Properly display JSON messages
  - [x] Limit the number of history items
+ - [ ] ARM-based docker image
  - [ ] Write to a topic
  - [ ] Delete a topic (send null to the broker)
- - [ ] Better component architecture (future-proofing)
+ - [ ] Better components architecture (future-proofing)
  - [ ] Optional: When a new value arrives, highlight it in the UI
  - [ ] Report a bad MQTT connection in the UI for easy troubleshooting
  - [ ] Support all MQTT connection option (ssl, etc.)

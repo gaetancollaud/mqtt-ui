@@ -1,6 +1,7 @@
-import {Component, DOCUMENT, effect, Inject, signal} from '@angular/core';
+import {Component, DOCUMENT, effect, inject, Inject, signal} from '@angular/core';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {PersistenceService} from '../services/persistence.service';
 
 const DARK_MODE_CLASS = 'dark-mode';
 
@@ -15,7 +16,9 @@ const DARK_MODE_CLASS = 'dark-mode';
 })
 export class Layout {
 
-  darkMode = signal<boolean>(true);
+  private persistenceService = inject(PersistenceService);
+
+  darkMode = signal<boolean>(this.persistenceService.getDarkMode());
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     effect(() => {
@@ -29,5 +32,6 @@ export class Layout {
 
   toggleDarkMode() {
     this.darkMode.set(!this.darkMode());
+    this.persistenceService.setDarkMode(this.darkMode());
   }
 }

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 
 const PERSISTENCE_KEY_OPEN_NODES = 'mqttui-open-nodes';
 const PERSISTENCE_KEY_CURRENT_NODE = 'mqttui-current-nodes';
+const PERSISTENCE_KEY_DARK_MODE = 'mqttui-dark-mode';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,13 @@ export class PersistenceService {
 
   public setCurrentNodePath(currentNode: string | undefined) {
     this.setToStorage(PERSISTENCE_KEY_CURRENT_NODE, currentNode);
+  }
+
+  public getDarkMode(): boolean {
+    return this.getFromStorage<boolean>(PERSISTENCE_KEY_DARK_MODE, JSON.parse) ?? true;
+  }
+
+  public setDarkMode(darkMode: boolean) {
+    this.setToStorage(PERSISTENCE_KEY_DARK_MODE, darkMode, JSON.stringify);
   }
 }
