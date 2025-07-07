@@ -1,26 +1,38 @@
 import {MqttMessage} from '../generated/openapi';
 
-export interface TreeItem {
-  name: string;
-  open: boolean;
-  path: string;
-  mqttMessage: MqttMessage | undefined;
-  children: TreeItem[];
+export class TreeItem {
+  public name: string;
+  public path: string;
+  public mqttMessage: MqttMessage | undefined;
+  public open: boolean;
+  public selected: boolean;
+  public children: TreeItem[];
+
+  constructor(
+    name: string,
+    path: string,
+    mqttMessage: MqttMessage | undefined = undefined,
+    open: boolean = false,
+    selected: boolean = false,
+    children: TreeItem[] = []) {
+    this.name = name;
+    this.path = path;
+    this.mqttMessage = mqttMessage;
+    this.open = open;
+    this.selected = selected;
+    this.children = children;
+  }
 }
 
-export function generateTree(mqttMessages: MqttMessage[], openPaths: string[]): TreeItem {
+export function generateTree(mqttMessages: MqttMessage[], openPaths: string[], selectedPath: string | undefined): TreeItem {
   const sorted = mqttMessages.sort((a, b) => (a.topic || '').localeCompare((b.topic || '')));
 
-  const root = {
-    name: '',
-    open: false,
-    path: '',
-    mqttMessage: undefined,
-    children: []
-  } as TreeItem;
+  const root = new TreeItem('', '');
 
   sorted.forEach(mqttMessage => addToNode(root, parseTopic(mqttMessage.topic!), mqttMessage, openPaths, true))
-
+  forEachNode(root, node => {
+    node.selected = selectedPath !== undefined && node.path.length > 0 && selectedPath.indexOf(node.path) !== -1;
+  })
   console.log(`New tree generated based on ${mqttMessages.length} messages and those open nodes:`, sorted, root);
   return root;
 }
@@ -48,28 +60,21 @@ function addToNode(node: TreeItem, paths: string[], mqttMessage: MqttMessage, op
     return;
   } else if (paths.length === 1) {
     let path = isRoot ? paths[0] : node.path + '/' + paths[0];
-    node.children.push({
-      open: openPaths.includes(path),
-      name: paths[0],
-      path: path,
-      mqttMessage: mqttMessage,
-      children: []
-    });
+    node.children.push(new TreeItem(paths[0], path, mqttMessage, openPaths.includes(path)));
   } else {
     // find the right children
     const name = paths[0];
     let child = node.children.find(child => child.name === name);
     if (!child) {
       let path = isRoot ? name : node.path + '/' + name;
-      child = {
-        name: name,
-        open: openPaths.includes(path),
-        path: path,
-        mqttMessage: undefined,
-        children: []
-      } as TreeItem;
+      child = new TreeItem(name, path, undefined, openPaths.includes(path));
       node.children.push(child);
     }
     addToNode(child, paths.slice(1), mqttMessage, openPaths, false);
   }
+}
+
+function forEachNode(node: TreeItem, callback: (node: TreeItem) => void) {
+  callback(node);
+  node.children.forEach(child => forEachNode(child, callback));
 }

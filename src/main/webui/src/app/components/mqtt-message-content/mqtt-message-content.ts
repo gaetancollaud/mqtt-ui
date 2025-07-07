@@ -2,15 +2,7 @@ import {Component, computed, input} from '@angular/core';
 import {JsonPipe} from '@angular/common';
 import {MqttMessage} from '../../generated/openapi';
 import {DateTimePipe} from '../../pipes/date-time-pipe';
-import {
-  MatCard,
-  MatCardAvatar,
-  MatCardContent,
-  MatCardHeader,
-  MatCardSubtitle,
-  MatCardTitle
-} from '@angular/material/card';
-import {TruncatedTextWithCopy} from '../truncated-text-with-copy/truncated-text-with-copy';
+import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle} from '@angular/material/card';
 
 @Component({
   selector: 'app-mqtt-message-content',
@@ -18,12 +10,9 @@ import {TruncatedTextWithCopy} from '../truncated-text-with-copy/truncated-text-
     JsonPipe,
     DateTimePipe,
     MatCard,
-    MatCardAvatar,
     MatCardContent,
     MatCardHeader,
-    MatCardSubtitle,
-    MatCardTitle,
-    TruncatedTextWithCopy
+    MatCardSubtitle
   ],
   templateUrl: './mqtt-message-content.html',
   styleUrl: './mqtt-message-content.scss'

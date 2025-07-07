@@ -1,7 +1,15 @@
+@use '@angular/material' as mat;
+
+
+
 :host{
   overflow: scroll;
 }
 
 mat-tree-node{
   cursor: pointer;
+}
+
+mat-tree-node.selected,  mat-tree-node.selected mat-icon{
+  color: var(--mat-sys-primary);
 }

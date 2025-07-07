@@ -3,14 +3,18 @@
 
     <mat-tree #tree [dataSource]="treeItem().children" [childrenAccessor]="childrenAccessor" [trackBy]="trackByFn">
       <!-- This is the tree node template for leaf nodes -->
-      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectNode(node)">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding
+                     (click)="selectNode(node)" [class.selected]="node.selected">
         <!-- use a disabled button to provide padding for tree leaf -->
-        <button matIconButton disabled></button>
+        <button matIconButton disabled>
+          <mat-icon>radio_button_unchecked</mat-icon>
+        </button>
         {{ node.name }}
       </mat-tree-node>
       <!-- This is the tree node template for expandable nodes -->
       <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
-                     [cdkTreeNodeTypeaheadLabel]="node.name" (click)="selectNode(node)">
+                     [cdkTreeNodeTypeaheadLabel]="node.name" (click)="selectNode(node)"
+                     [class.selected]="node.selected">
         <button matIconButton [attr.aria-label]="'Toggle ' + node.name">
           <mat-icon class="mat-icon-rtl-mirror">
             {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}

@@ -79,6 +79,7 @@ using environment variables:
  - [x] Properly display the date
  - [x] Properly display JSON messages
  - [x] Limit the number of history items
+ - [ ] show selected node in the tree
  - [ ] ARM-based docker image
  - [ ] Write to a topic
  - [ ] Delete a topic (send null to the broker)
@@ -86,3 +87,4 @@ using environment variables:
  - [ ] Optional: When a new value arrives, highlight it in the UI
  - [ ] Report a bad MQTT connection in the UI for easy troubleshooting
  - [ ] Support all MQTT connection option (ssl, etc.)
+ - [ ] Mobile layout

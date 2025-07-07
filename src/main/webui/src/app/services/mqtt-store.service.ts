@@ -14,8 +14,8 @@ export class MqttStoreService {
 
   private lastMessages = signal<MqttMessage[]>([]);
   private openNodes = signal<string[]>(this.persistenceService.getOpenNodes());
-  private tree = computed(() => generateTree(this.lastMessages(), this.openNodes()));
   private selectedNodePath = signal<string | undefined>(this.persistenceService.getCurrentNodePath());
+  private tree = computed(() => generateTree(this.lastMessages(), this.openNodes(), this.selectedNodePath()));
   private selectedNode = computed(() => {
     const path = this.selectedNodePath();
     if (path) {
